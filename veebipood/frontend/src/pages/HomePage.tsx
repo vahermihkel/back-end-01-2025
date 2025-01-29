@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Product } from "../models/Product";
 import { Button } from "@mui/material";
 import { Category } from "../models/Category";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -12,6 +14,7 @@ function HomePage() {
   const [activePage, setActivePage] = useState(1);
   const [pages, setPages] = useState<number[]>([]); // [1,2,3,4]
   const [activeCategoryId, setActiveCategoryId] = useState(0);
+  const {t} = useTranslation();
   
   useEffect(() => {
     fetch(`http://localhost:8080/public-products?categoryId=${activeCategoryId}&size=${size}&page=${activePage-1}`)
@@ -48,8 +51,16 @@ function HomePage() {
   }
 
   function addToCart(product: Product) {
-    console.log(product);
+    const cartLS = JSON.parse(localStorage.getItem("cart") || "[]");
+    cartLS.push(product);
+    localStorage.setItem("cart", JSON.stringify(cartLS));
   }
+
+  // 1.võtame localStorage-st   --> localStorage.getItem()
+  // 2.võtame jutumärgid maha  --> JSON.parse()
+  // 3.lisame localStorage-st võetule ühe juurde  --> .push()
+  // 4.paneme jutumärgid tagasi --> JSON.stringify()
+  // 5.paneme localStorage-sse tagasi  --> localStorage.setItem()
 
   function changePage(newPage: number) {
     setActivePage(newPage);
@@ -62,16 +73,18 @@ function HomePage() {
         <button onClick={() => filterByCategory(0)}>All categories</button>
         {categories.map(category => 
           <button onClick={() => filterByCategory(category.id)}>
-            {category.name}
+            {t(category.name)}
           </button>)}
       </div>
       
       <div>
         {products.map(product => 
-          <div key={product.id}>
-            <img src={product.image} alt="Product image" />
-            <div>{product.name}</div>
-            <div>{product.price} €</div>
+          <div className="product" key={product.id}>
+            <Link to={"/product/" + product.id}>
+              <img className="picture" src={product.image} alt="Product image" />
+              <div>{product.name}</div>
+              <div>{product.price} €</div>
+            </Link>
             {/* <div>{product.image}</div> */}
             <Button variant="outlined" onClick={() => addToCart(product)}>Add to cart</Button>
           </div>

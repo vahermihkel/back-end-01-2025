@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Product } from "../../models/Product";
 import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 function ManageProducts() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -69,7 +70,9 @@ function ManageProducts() {
                 <td style={{width: "500px", textAlign: "right"}}>
                   <button onClick={() => changeProductActive(product)}>Muuda {product.active ? "mitteaktiivseks": "aktiivseks"}</button>
                   <Button variant="outlined" onClick={() => deleteProduct(product)}>x</Button>
+                  <Link to={"/edit-product/" + product.id}>
                   <button>Muuda</button>
+                  </Link>  
                 </td>
               </tr>
             )}

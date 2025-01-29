@@ -19,3 +19,23 @@ table {
   width: 90%;
   margin: 5%;
 }
+
+.icon {
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+}
+
+.icon:hover {
+  opacity: 70%;
+  cursor: pointer;
+}
+
+.icon:active {
+  padding: 1px;
+}
+
+.product .picture {
+  width: 100px;
+  height: 100px;
+}
