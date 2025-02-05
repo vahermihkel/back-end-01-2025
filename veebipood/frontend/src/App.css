@@ -23,6 +23,9 @@ table {
 .icon {
   width: 30px;
   height: 30px;
+}
+
+.icon.lang {
   margin: 5px;
 }
 

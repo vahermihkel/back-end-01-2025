@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './App.css'
 import { Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
@@ -11,22 +10,23 @@ import NotFound from './pages/NotFound';
 import AddProduct from './pages/admin/AddProduct';
 import SingleProduct from './pages/SingleProduct';
 import EditProduct from './pages/admin/EditProduct';
+import Login from './pages/auth/Login';
+import Signup from './pages/auth/Signup';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
 {/* path sisse kirjutan, mis järgneb localhost:5173-le */}
         <NavigationBar />
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>  
         <br /><br />
 
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/cart' element={<Cart />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<Signup />} />
+
           <Route path='/product/:id' element={<SingleProduct />} />
           <Route path='/edit-product/:id' element={<EditProduct />} />
 

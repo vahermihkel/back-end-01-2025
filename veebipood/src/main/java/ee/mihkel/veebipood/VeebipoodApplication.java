@@ -21,6 +21,7 @@ public class VeebipoodApplication {
 // 6. Rendipood jätk. Swagger.
 // 7. Card-game.
 // 8. Frontend: Tõlge, 1 peale sattumine (URL parameeter), muutmine. Early return. Refide asemel Objecti sisestamine. LocalStorage
+// 9. CSS, Order (kokkuarvutamine, uus mudel - kogus ostukorvis) ja Person. onChange abil vormi sisestamine.
 
 // Endale: Bootstrapis as= on punane
 
@@ -30,11 +31,11 @@ public class VeebipoodApplication {
 // 8. K 29.01  13.00
 // 9. E 03.02  13.00
 //10. K 05.02  13.00
-//11. E 10.02  9.00
-//xx. K 12.02  -----
-//12. E 17.02  9.00
-//13. K 19.02  9.00
-//14. K 26.02 13.00
+//xx. K 12.02  -----  T ja K ei saa
+//11. N 13.02  9.00 -> Auth
+//12. E 17.02  9.00 -> Auth
+//13. K 19.02  9.00 -> Auth
+//14. K 26.02 13.00 -> Auth
 //15. E 03.03 13.00
 //16. K 05.03 13.00
 //17. E 10.03 13.00

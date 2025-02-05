@@ -4,6 +4,7 @@ import { Button } from "@mui/material";
 import { Category } from "../models/Category";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { CartProduct } from "../models/CartProduct";
 
 function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -51,8 +52,13 @@ function HomePage() {
   }
 
   function addToCart(product: Product) {
-    const cartLS = JSON.parse(localStorage.getItem("cart") || "[]");
-    cartLS.push(product);
+    const cartLS: CartProduct[] = JSON.parse(localStorage.getItem("cart") || "[]");
+    const index = cartLS.findIndex(cartProduct => cartProduct.product.id === product.id);
+    if (index >= 0) {  // if (index !== -1)
+      cartLS[index].quantity++;
+    } else {
+      cartLS.push({"product": product, "quantity": 1});
+    } 
     localStorage.setItem("cart", JSON.stringify(cartLS));
   }
 
@@ -72,7 +78,7 @@ function HomePage() {
       <div>
         <button onClick={() => filterByCategory(0)}>All categories</button>
         {categories.map(category => 
-          <button onClick={() => filterByCategory(category.id)}>
+          <button key={category.id} onClick={() => filterByCategory(category.id)}>
             {t(category.name)}
           </button>)}
       </div>

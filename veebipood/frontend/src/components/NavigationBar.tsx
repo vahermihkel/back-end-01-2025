@@ -24,8 +24,9 @@ function NavigationBar() {
           </Nav>
           <Nav>
             <Nav.Link as={Link} to="/login">{t("nav.login")}</Nav.Link>
-            <img className="icon" src="/english.png" onClick={() => setLanguage("en")} alt="" />
-            <img className="icon" src="/estonian.png" onClick={() => setLanguage("et")} alt="" />
+            <Nav.Link as={Link} to="/signup">{t("nav.signup")}</Nav.Link>
+            <img className="icon lang" src="/english.png" onClick={() => setLanguage("en")} alt="" />
+            <img className="icon lang" src="/estonian.png" onClick={() => setLanguage("et")} alt="" />
           </Nav>
         </Navbar.Collapse>
       </Container>
