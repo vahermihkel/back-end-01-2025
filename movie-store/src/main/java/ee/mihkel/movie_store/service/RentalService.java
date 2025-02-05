@@ -121,7 +121,7 @@ public class RentalService {
 
     }
 
-    private double getFilmLateFee(Film dbFilm, int days) {
+    public double getFilmLateFee(Film dbFilm, int days) {
         switch (dbFilm.getType()) {
             case NEW -> {
                 return (days - dbFilm.getDaysRented()) * PREMIUM_PRICE;
