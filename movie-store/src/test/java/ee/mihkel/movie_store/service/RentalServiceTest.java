@@ -8,7 +8,6 @@ import ee.mihkel.movie_store.model.FilmRentalDTO;
 import ee.mihkel.movie_store.repository.FilmRepository;
 import ee.mihkel.movie_store.repository.PersonRepository;
 import ee.mihkel.movie_store.repository.RentalRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -37,29 +36,30 @@ class RentalServiceTest {
     @Mock
     FilmRepository filmRepository;
 
-    @Mock
-    PersonRepository personRepository;
-
     @InjectMocks
     RentalService rentalService;
 
+    Film film = new Film();
+    List<FilmRentalDTO> filmRentalDTOs = new ArrayList<>();
+
+    Rental rental = new Rental();
+
+    Person person = new Person();
+
     @BeforeEach
     void setUp() {
-    }
+        when(filmRepository.findById(any())).thenReturn(Optional.of(film));
 
-    @Test
-    void givenFilmIsOldAndRentedForFiveDays_whenRentalStarts_thenInitialFeeIs3() {
-        List<FilmRentalDTO> filmRentalDTOs = new ArrayList<>();
         FilmRentalDTO filmRentalDTO = new FilmRentalDTO();
         filmRentalDTO.setDays(5);
         filmRentalDTOs.add(filmRentalDTO);
 
-        Film film = new Film();
-        film.setType(FilmType.OLD);
-        when(filmRepository.findById(any())).thenReturn(Optional.of(film));
-
-        Rental rental = new Rental();
         when(rentalRepository.save(any())).thenReturn(rental);
+    }
+
+    @Test
+    void givenFilmIsOldAndRentedForFiveDays_whenRentalStarts_thenInitialFeeIs3() {
+        film.setType(FilmType.OLD);
 
         rentalService.saveRental(filmRentalDTOs, new Person(), 0);
         assertEquals(3, rental.getInitialFee());
@@ -67,17 +67,7 @@ class RentalServiceTest {
 
     @Test
     void givenFilmIsNewAndRentedForFiveDays_whenRentalStarts_thenInitialFeeIs20() {
-        List<FilmRentalDTO> filmRentalDTOs = new ArrayList<>();
-        FilmRentalDTO filmRentalDTO = new FilmRentalDTO();
-        filmRentalDTO.setDays(5);
-        filmRentalDTOs.add(filmRentalDTO);
-
-        Film film = new Film();
         film.setType(FilmType.NEW);
-        when(filmRepository.findById(any())).thenReturn(Optional.of(film));
-
-        Rental rental = new Rental();
-        when(rentalRepository.save(any())).thenReturn(rental);
 
         rentalService.saveRental(filmRentalDTOs, new Person(), 0);
         assertEquals(20, rental.getInitialFee());
@@ -86,46 +76,24 @@ class RentalServiceTest {
 
     @Test
     void givenFilmIsAlreadyRented_whenRentalStarts_thenFilmRentedExceptionIsThrown() {
-//        Film dbFilm = filmRepository.findById(f.getId()).orElseThrow();
-        Film film = new Film();
         film.setDaysRented(1);
-        when(filmRepository.findById(any())).thenReturn(Optional.of(film));
 
-        List<FilmRentalDTO> filmRentalDTOs = new ArrayList<>();
-        FilmRentalDTO filmRentalDTO = new FilmRentalDTO();
-        filmRentalDTOs.add(filmRentalDTO);
-
-        Person person = new Person();
         RuntimeException exception = assertThrows(RuntimeException.class, () -> rentalService.checkIfAllAvailable(filmRentalDTOs,person,0));
         assertTrue(exception.getMessage().startsWith("ERROR_FILM_RENTED"));
     }
 
     @Test
     void givenNotEnoughBonusPoints_whenRentalStarts_thenNotEnoughExceptionIsThrown() {
-        Film film = new Film();
         film.setType(FilmType.NEW);
-        when(filmRepository.findById(any())).thenReturn(Optional.of(film));
 
-        List<FilmRentalDTO> filmRentalDTOs = new ArrayList<>();
-        FilmRentalDTO filmRentalDTO = new FilmRentalDTO();
-        filmRentalDTOs.add(filmRentalDTO);
-
-        Person person = new Person();
         RuntimeException exception = assertThrows(RuntimeException.class, () -> rentalService.checkIfAllAvailable(filmRentalDTOs,person,1));
         assertTrue(exception.getMessage().startsWith("ERROR_NOT_ENOUGH_BONUS_POINTS"));
     }
 
     @Test
     void givenAllCorrect_whenRentalStarts_thenNoExceptionIsThrown() {
-        Film film = new Film();
         film.setType(FilmType.NEW);
-        when(filmRepository.findById(any())).thenReturn(Optional.of(film));
 
-        List<FilmRentalDTO> filmRentalDTOs = new ArrayList<>();
-        FilmRentalDTO filmRentalDTO = new FilmRentalDTO();
-        filmRentalDTOs.add(filmRentalDTO);
-
-        Person person = new Person();
         person.setBonusPoints(50);
         assertDoesNotThrow(() -> rentalService.checkIfAllAvailable(filmRentalDTOs,person,2));
     }
@@ -139,7 +107,6 @@ class RentalServiceTest {
     // given_when_then
     @Test
     void givenFilmIsNewAndLateForOneDay_whenFilmIsReturned_thenLateFeeIs4() {
-        Film film = new Film();
         film.setType(FilmType.NEW);
         film.setDaysRented(4);
         double filmCost = rentalService.getFilmLateFee(film, 5);
@@ -148,7 +115,6 @@ class RentalServiceTest {
 
     @Test
     void givenFilmIsOldAndLateForFourDays_whenFilmIsReturned_thenLateFeeIs12() {
-        Film film = new Film();
         film.setType(FilmType.OLD);
         film.setDaysRented(3);
         double filmCost = rentalService.getFilmLateFee(film, 7);

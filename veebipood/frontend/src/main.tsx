@@ -5,6 +5,8 @@ import './index.css'
 import './i18n';
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router-dom'
+import { AuthContextProvider } from './store/AuthContext.tsx';
+import { CartSumContextProvider } from './store/CartSumContext.tsx';
 
 // meie fail "./" või "../"
 // node_module seest "react"   või  "react-router-dom"
@@ -23,7 +25,11 @@ import { BrowserRouter } from 'react-router-dom'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <AuthContextProvider>
+        <CartSumContextProvider>
+          <App />
+        </CartSumContextProvider>
+      </AuthContextProvider>
     </BrowserRouter>
   </StrictMode>,
 )

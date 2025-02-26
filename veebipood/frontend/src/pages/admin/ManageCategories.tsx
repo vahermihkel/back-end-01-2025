@@ -4,9 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 function ManageCategories() {
   const [categories, setCategories] = useState<Category[]>([]);
-    //let categories = []; // kui muudan muutujat, siis kuidas muutub HTML?
-    // document.getElementById("dasdsad").innerHTML = <div></div>
-  // const [message, setMessage] = useState("");
+  const [category, setCategory] = useState<Category>({name: ""});
 
    useEffect(() => {
       fetch("http://localhost:8080/categories")
@@ -14,9 +12,34 @@ function ManageCategories() {
         .then(json => setCategories(json));
     }, []);
 
-    function kustuta(categoryId: number) {
+    function add() {
+      fetch("http://localhost:8080/categories", {
+        method: "POST",
+        body: JSON.stringify(category),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + sessionStorage.getItem("token") || ""
+        }
+      })
+        .then(res => res.json())
+        .then(json => {
+          if (json.timestamp && json.status && json.error) {
+            //setMessage(json.error);
+            toast.error(json.error);
+          } else {
+            setCategories(json);
+            //setCategory({name: ""});
+            // categoryRef.current.value = "";
+          }
+        });
+    }
+
+    function kustuta(categoryId: number | undefined) {
       fetch("http://localhost:8080/categories/" + categoryId, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+          "Authorization": "Bearer " + sessionStorage.getItem("token") || ""
+        }
       })
         .then(res => res.json())
         .then(json => {
@@ -29,8 +52,19 @@ function ManageCategories() {
         });
     }
 
+    function updateCategory(e) {
+      if (e.code === "Enter") {
+        add();
+      } else {
+        setCategory({...category, name: e.target.value});
+      }
+    }
+
   return (
     <div>
+      <label>Kategooria</label> <br />
+      <input onKeyUp={updateCategory} type="text" /> <br />
+      <button onClick={add}>Lisa</button> <br />
       {/* <div>{message}</div> */}
         <div>Kokku kategooriaid: {categories.length} tk</div>
         <div>{categories.map(category => 

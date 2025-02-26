@@ -5,6 +5,7 @@ import ee.mihkel.veebipood.entity.OrderRow;
 import ee.mihkel.veebipood.repository.OrderRepository;
 import ee.mihkel.veebipood.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,9 +20,12 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    // localhost:8080/orders?personId=1
+    // localhost:8080/orders
     @PostMapping("orders")
-    public List<Order> saveOrder(@RequestParam Long personId, @RequestBody List<OrderRow> rows) {
+    public List<Order> saveOrder(@RequestBody List<OrderRow> rows) {
+        Long personId = Long.parseLong(
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString()
+        );
         orderService.saveOrder(rows, personId);
         return orderRepository.findAll();
     }

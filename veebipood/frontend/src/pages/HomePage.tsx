@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Product } from "../models/Product";
 import { Button } from "@mui/material";
 import { Category } from "../models/Category";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { CartProduct } from "../models/CartProduct";
+import { CartSumContext } from "../store/CartSumContext";
 
 function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -16,6 +17,7 @@ function HomePage() {
   const [pages, setPages] = useState<number[]>([]); // [1,2,3,4]
   const [activeCategoryId, setActiveCategoryId] = useState(0);
   const {t} = useTranslation();
+  const {increase} = useContext(CartSumContext);
   
   useEffect(() => {
     fetch(`http://localhost:8080/public-products?categoryId=${activeCategoryId}&size=${size}&page=${activePage-1}`)
@@ -60,6 +62,7 @@ function HomePage() {
       cartLS.push({"product": product, "quantity": 1});
     } 
     localStorage.setItem("cart", JSON.stringify(cartLS));
+    increase(product.price);
   }
 
   // 1.võtame localStorage-st   --> localStorage.getItem()
@@ -74,6 +77,7 @@ function HomePage() {
 
   return (
     <div>
+      <div>Toodete arv kokku: {products.length} tk</div>
 
       <div>
         <button onClick={() => filterByCategory(0)}>All categories</button>

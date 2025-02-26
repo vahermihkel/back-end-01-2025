@@ -19,8 +19,10 @@ function Signup() {
       .then(json => {
         if (json.timestamp && json.status && json.error) {
           setMessage(json.error);
-        } else {
+        } else if (json.firstName && json.lastName) {
           navigate("/login");
+        } else {
+          console.log("UNEXPECTED RETURN");
         }
       });
   }

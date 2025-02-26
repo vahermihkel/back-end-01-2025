@@ -22,7 +22,7 @@ public class ProductController {
 //    private ProductRepository productRepository2;
 //
 //    public ProductController(ProductRepository productRepository) {
-//        this.productRepository2 = productRepository;
+//        this.productRepository2 = productRepository;  
 //    }
 
     // localhost:8080/products

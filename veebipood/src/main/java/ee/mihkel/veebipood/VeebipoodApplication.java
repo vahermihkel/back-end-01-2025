@@ -23,6 +23,22 @@ public class VeebipoodApplication {
 // 8. Frontend: Tõlge, 1 peale sattumine (URL parameeter), muutmine. Early return. Refide asemel Objecti sisestamine. LocalStorage
 // 9. CSS, Order (kokkuarvutamine, uus mudel - kogus ostukorvis) ja Person. onChange abil vormi sisestamine.
 // 10. DTO - Data Transfer Object, ModelMapper, Beanid. Unit testid (rental)
+// 11. Auth:
+// a)+Kontrolleris võimekuse tegemine emaili passwordi vastu võtmiseks
+// b)+Emaili ja Passwordi mudeli saatmine Frondist Backi, Stringi tagastamine
+// c)+Stringi salvestame sessionStorage-sse, et jääks alles märk, et on sisselogitud
+// d)+Context Reactis ---> globaalne muutuja
+// +Contexti paremaks arusaamiseks ka ostukorvi kogusumma Frondis Navbaris
+// e)+Nuppude ära peitmine. +URLde ära peitmine.
+// f)+Ei tagasta enam Token123 vaid JSON WEB TOKENI
+// g)+Frondis peab hakkama päringuid tegema, kas on ikka õige Token
+// +Paneme peale API OTSPUNKTIDE KAITSE ---> pikk ja keeruline
+// +h)API otspunktidele paneme Authorization peale
+// i)Rollid -> admin / tavakasutaja
+// j)Paneme andmebaasis igale Personile külge, kas on admin või mitte
+// k)Paneme igale API otspunktile külge, kas  tavainimene või admin saab ligi
+// l)Frondis nuppudele kas admin või tavainimene saab ligi
+// m)+Tellimust tehes ei pea enam isikut saatma
 
 // Endale: Bootstrapis as= on punane
 
@@ -39,8 +55,8 @@ public class VeebipoodApplication {
 //11. N 13.02  9.00 -> Auth
 //12. E 17.02  9.00 -> Auth
 //13. K 19.02  9.00 -> Auth
-//14. K 26.02 13.00 -> Auth
-//15. E 03.03 13.00 -> Auth
-//16. K 05.03 13.00
+//14. K 26.02 13.00 -> Auth   profiil, tellimused, rollid
+//15. E 03.03 13.00 -> RestTemplate -> päringud rakendusest välja (pakiautomaadid, makse)
+//16. K 05.03 13.00  CRON, Cache, Email, Shell-script. Front-endis TypeScript errorid.
 //17. E 10.03 13.00
 //18. K 26.03 13.00 ---> lõpuprojekti esitlemine

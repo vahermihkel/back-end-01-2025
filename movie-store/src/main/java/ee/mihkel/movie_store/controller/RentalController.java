@@ -1,10 +1,8 @@
 package ee.mihkel.movie_store.controller;
 
-import ee.mihkel.movie_store.entity.Film;
 import ee.mihkel.movie_store.entity.Person;
 import ee.mihkel.movie_store.entity.Rental;
 import ee.mihkel.movie_store.model.FilmRentalDTO;
-import ee.mihkel.movie_store.repository.FilmRepository;
 import ee.mihkel.movie_store.repository.PersonRepository;
 import ee.mihkel.movie_store.repository.RentalRepository;
 import ee.mihkel.movie_store.service.RentalService;

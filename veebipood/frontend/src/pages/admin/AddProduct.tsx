@@ -1,12 +1,21 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import { Category } from '../../models/Category';
 
 function AddProduct() {
   const nameRef = useRef<HTMLInputElement>(null); // ref ---> inputi seest väärtuse kättesaamiseks
   const priceRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLInputElement>(null);
-  const categoryRef = useRef<HTMLInputElement>(null);
+  const categoryRef = useRef<HTMLSelectElement>(null);
   const activeRef = useRef<HTMLInputElement>(null);
+
+  const [categories, setCategories] = useState<Category[]>([]);
+  
+  useEffect(() => {
+    fetch("http://localhost:8080/categories")
+      .then(res => res.json())
+      .then(json => setCategories(json));
+  }, []);
 
   function add() {
     if (nameRef.current === null || priceRef.current === null || imageRef.current === null ||
@@ -21,13 +30,16 @@ function AddProduct() {
       "price": priceRef.current.value,
       "image": imageRef.current.value,
       "category": {"id": categoryRef.current.value},
-      "active": activeRef.current.value
+      "active": activeRef.current.checked
     };
 
     fetch("http://localhost:8080/products", {
       method: "POST",
       body: JSON.stringify(product),
-      headers: {"Content-Type": "application/json"}
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + sessionStorage.getItem("token") || ""
+      }
     })
       .then(res => res.json())
       .then(json => {
@@ -48,9 +60,15 @@ function AddProduct() {
       <label>Image</label> <br />
       <input ref={imageRef} type="text" /> <br />
       <label>Category</label> <br />
-      <input ref={categoryRef} type="text" /> <br />
+      {/* <input ref={categoryRef} type="text" /> <br /> */}
+      <select ref={categoryRef}>
+        {categories.map(category => 
+          <option key={category.id} value={category.id}>
+            {category.name}
+          </option>)}
+      </select> <br />
       <label>Active</label> <br />
-      <input ref={activeRef} type="text" /> <br />
+      <input ref={activeRef} type="checkbox" /> <br />
       <button onClick={add}>Add</button>
 
       <ToastContainer

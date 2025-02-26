@@ -3,5 +3,7 @@ export type Person = {
   firstName: string
   lastName: string,
   email: string,
-  password: string
+  password: string,
+  phone: string,
+  personalCode: string
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { Product } from "../../models/Product";
+import { Category } from "../../models/Category";
 
 function EditProduct() {
   // http://localhost:5173/edit-product/1    :id
@@ -17,6 +18,14 @@ function EditProduct() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate(); // import reac-router-dom
 
+  const [categories, setCategories] = useState<Category[]>([]);
+    
+  useEffect(() => {
+    fetch("http://localhost:8080/categories")
+      .then(res => res.json())
+      .then(json => setCategories(json));
+  }, []);
+
   useEffect(() => {
     fetch("http://localhost:8080/products/" + id)
       .then(res => res.json())
@@ -28,7 +37,8 @@ function EditProduct() {
       method: "PUT",
       body: JSON.stringify(product),
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + sessionStorage.getItem("token") || ""
       }
     })
       .then(res => res.json())
@@ -61,7 +71,13 @@ function EditProduct() {
       <label>Image</label><br />
       <input onChange={(e) => setProduct({...product, image: e.target.value})} defaultValue={product.image} type="text" /> <br />
       <label>Category</label><br />
-      <input disabled defaultValue={product.category?.name} type="text" /> <br />
+      {/* <input disabled defaultValue={product.category?.name} type="text" /> <br /> */}
+      <select onChange={(e) => setProduct({...product, category: {id: Number(e.target.value), name: ""}})} defaultValue={product.category?.id}>
+        {categories.map(category => 
+          <option key={category.id} value={category.id}>
+            {category.name}
+          </option>)}
+      </select> <br />
       <label>Active</label><br />
       <input onChange={(e) => setProduct({...product, active: e.target.checked})} defaultChecked={product.active} type="checkbox" /> <br />
       {/* <Link to="/admin/products"> */}

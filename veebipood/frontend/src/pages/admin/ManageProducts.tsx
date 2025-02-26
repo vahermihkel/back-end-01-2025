@@ -8,14 +8,21 @@ function ManageProducts() {
   const [message, setMessage] = useState("");
   
   useEffect(() => {
-    fetch("http://localhost:8080/products")
+    fetch("http://localhost:8080/products", {
+      headers: {
+        "Authorization": "Bearer " + sessionStorage.getItem("token") || ""
+      }
+    })
       .then(res => res.json())
       .then(json => setProducts(json));
   }, []);
 
   function deleteProduct(product: Product) {
     fetch("http://localhost:8080/products/" + product.id, {
-      method: "DELETE"
+      method: "DELETE",
+      headers: {
+        "Authorization": "Bearer " + sessionStorage.getItem("token") || ""
+      }
     })
       .then(res => res.json())
       .then(json => {
@@ -30,7 +37,10 @@ function ManageProducts() {
   function changeProductActive(product: Product) {
  // fetch("http://localhost:8080/product-active?id=" + product.id + "&active=" + !product.active, {
     fetch(`http://localhost:8080/product-active?id=${product.id}&active=${!product.active}`, {
-      method: "PATCH"
+      method: "PATCH",
+      headers: {
+        "Authorization": "Bearer " + sessionStorage.getItem("token") || ""
+      }
     })
       .then(res => res.json())
       .then(json => {
