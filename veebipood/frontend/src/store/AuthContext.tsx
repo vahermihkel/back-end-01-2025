@@ -1,19 +1,18 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 
 // seda pean importima, et kätte saada muutujaid
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext({
-  admin: false,
+  role: "",
   loggedIn: false,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setAdmin: (value: boolean) => {},
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setLoggedIn: (value: boolean) => {},
+  setRole: (value: string) => {console.log(value)},
+  setLoggedIn: (value: boolean) => {console.log(value)},
   loading: true
 });
 
 // seda pean importima näitamaks mis on tema globaalsus
 export const AuthContextProvider = ({children}: {children: ReactNode}) => {
-  const [admin, setAdmin] = useState(false);
+  const [role, setRole] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -28,7 +27,7 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
         if (json.timestamp && json.status && json.error) {
           // viskame errori
         } else {
-          setAdmin(true);
+          setRole(json.role);
           setLoggedIn(true);
         }
         setLoading(false);
@@ -39,7 +38,7 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{admin, loggedIn, setAdmin, setLoggedIn, loading}}>
+    <AuthContext.Provider value={{role, loggedIn, setRole, setLoggedIn, loading}}>
       {children}
     </AuthContext.Provider>
     )

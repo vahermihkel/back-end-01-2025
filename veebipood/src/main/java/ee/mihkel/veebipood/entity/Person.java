@@ -19,4 +19,5 @@ public class Person {
     private String password;
     private String phone;
     private String personalCode;
+    private PersonRole role;
 }

@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { CartProduct } from "../models/CartProduct";
 import { CartSumContext } from "../store/CartSumContext";
+import CarouselGallery from "../components/CarouselGallery";
+import styles from "../css/Pagination.module.css";
 
 function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -77,12 +79,14 @@ function HomePage() {
 
   return (
     <div>
+      <CarouselGallery />
+
       <div>Toodete arv kokku: {products.length} tk</div>
 
       <div>
         <button onClick={() => filterByCategory(0)}>All categories</button>
         {categories.map(category => 
-          <button key={category.id} onClick={() => filterByCategory(category.id)}>
+          <button key={category.id} onClick={() => filterByCategory(Number(category.id))}>
             {t(category.name)}
           </button>)}
       </div>
@@ -101,9 +105,17 @@ function HomePage() {
         )}
       </div>
 
+      <button disabled={activePage === 1} onClick={() => changePage(activePage-1)}>{"<"}</button>
       {
-        pages.map(page => <button key={page} onClick={() => changePage(page)}>{page}</button> )
+        pages.map(page => 
+          <button 
+            key={page} 
+            className={page === activePage ? styles.active : undefined} 
+            onClick={() => changePage(page)}>
+              {page}
+          </button> )
       }
+      <button disabled={activePage === pages.length} onClick={() => changePage(activePage+1)}>{">"}</button>
 
     </div>
   )

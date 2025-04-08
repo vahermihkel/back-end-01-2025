@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Product } from "../../models/Product";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
+// import "../../css/ManageProducts.css"; globaalne import
+import styles from "../../css/ManageProducts.module.css";
 
 function ManageProducts() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -70,7 +72,7 @@ function ManageProducts() {
         </thead>
         <tbody>
           {products.map(product => 
-              <tr key={product.id} className={product.active ? "active": "inactive"}>
+              <tr key={product.id} className={product.active ? styles.active: styles.inactive}>
                 <td>{product.id}</td>
                 <td>{product.name}</td>
                 <td>{product.price} €</td>

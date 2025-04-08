@@ -11,7 +11,7 @@ import { CartSumContext } from '../store/CartSumContext';
 function NavigationBar() {
   const {t, i18n} = useTranslation();
   // const [admin, setAdmin] = useState(true);
-  const {admin, setAdmin, loggedIn, setLoggedIn} = useContext(AuthContext);
+  const {role, setRole, loggedIn, setLoggedIn} = useContext(AuthContext);
   const {cartSum} = useContext(CartSumContext);
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ function NavigationBar() {
   }
 
   const logout = () => {
-    setAdmin(false);
+    setRole("");
     setLoggedIn(false);
     sessionStorage.removeItem("token");
     navigate("/");
@@ -34,13 +34,15 @@ function NavigationBar() {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            {loggedIn === true && admin === true && <Nav.Link as={Link} to="/admin">Admin</Nav.Link>}
+            {loggedIn === true && (role === "ADMIN" || role === "SUPERADMIN") && <Nav.Link as={Link} to="/admin">Admin</Nav.Link>}
+            {loggedIn === true && role === "SUPERADMIN" && <Nav.Link as={Link} to="/superadmin/persons">Persons</Nav.Link>}
             <Nav.Link as={Link} to="/cart">{t("nav.cart")}</Nav.Link>
           </Nav>
           <Nav>
             {loggedIn === true ? 
               <>
                 <Nav.Link as={Link} to="/profile">{t("nav.profile")}</Nav.Link>
+                <Nav.Link as={Link} to="/orders">{t("nav.orders")}</Nav.Link>
                 <Nav.Link onClick={logout}>{t("nav.logout")}</Nav.Link>
               </> :
               <>

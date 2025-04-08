@@ -12,6 +12,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Component;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class JwtFilter extends BasicAuthenticationFilter {
@@ -51,8 +54,20 @@ public class JwtFilter extends BasicAuthenticationFilter {
 
             Long id = Long.parseLong(payLoad.get("id").toString());
             String email = payLoad.get("email").toString();
+            String role = payLoad.get("role").toString();
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            GrantedAuthority authority = new SimpleGrantedAuthority(role);
+            authorities.add(authority);
+            if (role.equals("SUPERADMIN")) {
+                GrantedAuthority adminAuthority = new SimpleGrantedAuthority("ADMIN");
+                authorities.add(adminAuthority);
+            }
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(id, email, new ArrayList<>());
+            // CUSTOMER
+            // ADMIN -> POST products, categories, DELETE products, categories
+            // SUPERADMIN -> GET persons, PATCH person-admin
+
+            Authentication authentication = new UsernamePasswordAuthenticationToken(id, email,authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         super.doFilterInternal(request, response, chain);

@@ -2,7 +2,9 @@ package ee.mihkel.veebipood;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
+@EnableScheduling
 @SpringBootApplication
 public class VeebipoodApplication {
 
@@ -33,17 +35,17 @@ public class VeebipoodApplication {
 // f)+Ei tagasta enam Token123 vaid JSON WEB TOKENI
 // g)+Frondis peab hakkama päringuid tegema, kas on ikka õige Token
 // +Paneme peale API OTSPUNKTIDE KAITSE ---> pikk ja keeruline
-// +h)API otspunktidele paneme Authorization peale
-// i)Rollid -> admin / tavakasutaja
-// j)Paneme andmebaasis igale Personile külge, kas on admin või mitte
-// k)Paneme igale API otspunktile külge, kas  tavainimene või admin saab ligi
-// l)Frondis nuppudele kas admin või tavainimene saab ligi
+// h)+API otspunktidele paneme Authorization peale
+// i)+Rollid -> admin / tavakasutaja
+// j)+Paneme andmebaasis igale Personile külge, kas on admin või mitte
+// k)+Paneme igale API otspunktile külge, kas  tavainimene või admin saab ligi
+// l)+Frondis nuppudele kas admin või tavainimene saab ligi
 // m)+Tellimust tehes ei pea enam isikut saatma
 
 // Endale: Bootstrapis as= on punane
 
-// Rakendusesest välja API päringud: RestTemplate
-// Front-end Context (redux)
+// +Rakendusesest välja API päringud: RestTemplate
+// +Front-end Context (redux)
 
 // 5. T 21.01  13.00
 // 6. N 23.01  13.00
@@ -56,7 +58,16 @@ public class VeebipoodApplication {
 //12. E 17.02  9.00 -> Auth
 //13. K 19.02  9.00 -> Auth
 //14. K 26.02 13.00 -> Auth   profiil, tellimused, rollid
-//15. E 03.03 13.00 -> RestTemplate -> päringud rakendusest välja (pakiautomaadid, makse)
-//16. K 05.03 13.00  CRON, Cache, Email, Shell-script. Front-endis TypeScript errorid.
-//17. E 10.03 13.00
-//18. K 26.03 13.00 ---> lõpuprojekti esitlemine
+//15. E 03.03 13.00 -> ROLLIDE VAHETUS. RestTemplate -> päringud rakendusest välja (pakiautomaadid, makse), Makse lõpetamine
+//16. N 06.03 14.00 CRON, Cache, Shell-script.
+//17. E 10.03 14.30-16.30 Muutujate väljatõste config faili. Profiilid. Email. Front-endis TypeScript errorid.
+//18. K 26.03 14.00-16.30 Redis. Bowling. lõpuprojekti esitlemine
+// allkirjalehele 26.03 asemel 12.03
+
+// Näited päringud rakendusest välja:
+// Makse->Kas on makstud
+// Pakiautomaadid
+// Tarnija
+
+// Smart-ID
+// Eesti.ee -> on laps

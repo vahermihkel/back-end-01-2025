@@ -15,9 +15,11 @@ import Signup from './pages/auth/Signup';
 import { useContext } from 'react';
 import { AuthContext } from './store/AuthContext';
 import Profile from './pages/auth/Profile';
+import Orders from './pages/auth/Orders';
+import Persons from './pages/auth/Persons';
 
 function App() {
-  const {loggedIn, admin, loading} = useContext(AuthContext);
+  const {loggedIn, role, loading} = useContext(AuthContext);
 
   if (loading) {
     // return <img src="/vite.svg" alt="" />
@@ -39,9 +41,14 @@ function App() {
           <Route path='/product/:id' element={<SingleProduct />} />
           <Route path='/edit-product/:id' element={<EditProduct />} />
 
-          {loggedIn === true && <Route path='/profile' element={<Profile />} /> } 
+          {loggedIn === true && 
+            <>
+              <Route path='/profile' element={<Profile />} />
+              <Route path='/orders' element={<Orders />} />
+            </>
+           } 
 
-          {loggedIn === true && admin === true ?
+          {loggedIn === true && (role === "ADMIN" || role === "SUPERADMIN") ?
           <>
             <Route path='/admin' element={<AdminHome />} />
             <Route path='/admin/categories' element={<ManageCategories />} />
@@ -49,6 +56,13 @@ function App() {
             <Route path='/admin/add-product' element={<AddProduct />} />
           </> : 
             <Route path="/admin/*" element={<Navigate to={"/login"} />} />
+          }
+
+          {loggedIn === true && role === "SUPERADMIN" ?
+          <>
+            <Route path='/superadmin/persons' element={<Persons />} />
+          </> : 
+            <Route path="/superadmin/*" element={<Navigate to={"/login"} />} />
           }
           <Route path='*' element={<NotFound />} />
         </Routes>   

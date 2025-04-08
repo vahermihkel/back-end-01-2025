@@ -7,7 +7,7 @@ function Login() {
   const [emailPassword, setEmailPassword] = useState<EmailPassword>({email: "", password: ""});
   const [message, setMessage] = useState("");
   const navigate = useNavigate(); // import reac-router-dom
-  const {setAdmin, setLoggedIn} = useContext(AuthContext);
+  const {setRole, setLoggedIn} = useContext(AuthContext);
 
   function login() {
     fetch("http://localhost:8080/login", {
@@ -22,7 +22,7 @@ function Login() {
         if (json.timestamp && json.status && json.error) {
           setMessage(json.error);
         } else {
-          setAdmin(true);
+          setRole(json.role);
           setLoggedIn(true);
           sessionStorage.setItem("token", json.token)
           navigate("/admin");

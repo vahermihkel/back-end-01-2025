@@ -2,14 +2,17 @@ package ee.mihkel.veebipood.controller;
 
 import ee.mihkel.veebipood.dto.PersonDTO;
 import ee.mihkel.veebipood.entity.Person;
+import ee.mihkel.veebipood.entity.PersonRole;
 import ee.mihkel.veebipood.model.AuthToken;
 import ee.mihkel.veebipood.model.EmailPassword;
 import ee.mihkel.veebipood.repository.PersonRepository;
+import ee.mihkel.veebipood.service.EmailService;
 import ee.mihkel.veebipood.service.PersonService;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +31,15 @@ public class PersonController {
 
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    EmailService emailService;
+
+    @GetMapping("email")
+    public String sendEmail() {
+        emailService.sendEmail();
+        return "Email saadetud";
+    }
 
     @PostMapping("login")
     public AuthToken login(@RequestBody EmailPassword emailPassword) {
@@ -61,5 +73,22 @@ public class PersonController {
     @PutMapping("person")
     public Person editPerson(@RequestBody Person person) {
         return personRepository.save(person);
+    }
+
+    @GetMapping("persons")
+    public Page<Person> getPersons(Pageable pageable) {
+        log.info("Fetching all persons");
+        return personRepository.findAll(pageable);
+    }
+
+    @PatchMapping("person-admin")
+    public Page<Person> changePersonAdmin(@RequestParam Long personId, boolean isAdmin, Pageable pageable) {
+        Person person = personRepository.findById(personId).orElseThrow();
+        if (isAdmin) {
+            person.setRole(PersonRole.ADMIN);
+        } else {
+            person.setRole(PersonRole.CUSTOMER);
+        }
+        return personRepository.findAll(pageable);
     }
 }

@@ -5,5 +5,6 @@ export type Person = {
   email: string,
   password: string,
   phone: string,
-  personalCode: string
+  personalCode: string,
+  role: string
 }

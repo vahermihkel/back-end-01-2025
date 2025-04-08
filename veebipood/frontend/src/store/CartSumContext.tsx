@@ -1,10 +1,11 @@
 import { createContext, ReactNode, useState } from "react";
 import { CartProduct } from "../models/CartProduct";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const CartSumContext = createContext({
   cartSum: 0,
-  increase: (value: number) => {},
-  decrease: (value: number) => {},
+  increase: (value: number) => {console.log(value)},
+  decrease: (value: number) => {console.log(value)},
   empty: () => {}
 });
 

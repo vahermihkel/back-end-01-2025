@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 import { Category } from "../../models/Category";
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -52,11 +52,11 @@ function ManageCategories() {
         });
     }
 
-    function updateCategory(e) {
+    function updateCategory(e: KeyboardEvent<HTMLInputElement>) {
       if (e.code === "Enter") {
         add();
       } else {
-        setCategory({...category, name: e.target.value});
+        setCategory({...category, name: e.currentTarget.value});
       }
     }
 

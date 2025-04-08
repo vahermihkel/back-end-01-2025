@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { Person } from "../../models/Person";
 
 function Signup() {
-  const [person, setPerson] = useState<Person>({firstName: "", lastName: "", email: "", password: ""});
+  const [person, setPerson] = useState<Person>({firstName: "", lastName: "", email: "", password: "", phone: "", personalCode: "", role: ""});
   const [message, setMessage] = useState("");
   const navigate = useNavigate(); // import reac-router-dom
 

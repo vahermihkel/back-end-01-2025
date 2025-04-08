@@ -2,6 +2,7 @@ package ee.mihkel.veebipood.controller;
 
 import ee.mihkel.veebipood.entity.Product;
 import ee.mihkel.veebipood.repository.ProductRepository;
+import ee.mihkel.veebipood.service.ProductCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 // API päringute vastuvõtmiseks. Front-end suhtleb back-endiga selle kaudu.
 @CrossOrigin(origins = "http://localhost:5173")
@@ -98,13 +100,17 @@ public class ProductController {
         return productRepository.findByOrderByIdAsc();
     }
 
+    @Autowired
+    ProductCache productCache;
+
     @GetMapping("products/{id}")
-    public Product getProduct(@PathVariable Long id) {
+    public Product getProduct(@PathVariable Long id) throws ExecutionException {
         // Optional --> võib tagastada ka "null"
-        Optional<Product> productOptional = productRepository.findById(id);
-        return productOptional.orElseThrow(); // eelistatud, sest nimes ütleb exceptionit
+//        Optional<Product> productOptional = productRepository.findById(id);
+        //return productOptional.orElseThrow(); // eelistatud, sest nimes ütleb exceptionit
         // return productOptional.get(); <--- täpselt sama
         //return productOptional.orElse(null);
+        return productCache.getProductFromCache(id);
     }
 
     // broneering -> available: false

@@ -61,7 +61,7 @@ public class PersonService {
         Map<String, String> payload = new HashMap<>();
         payload.put("id", person.getId().toString());
         payload.put("email", person.getEmail());
-        payload.put("admin", "true");
+        payload.put("role", person.getRole().toString());
 
         SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(superSecretKey));
 

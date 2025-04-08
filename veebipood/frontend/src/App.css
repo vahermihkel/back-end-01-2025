@@ -5,16 +5,6 @@
   text-align: center;
 }
 
-.active {
-  background-color: rgb(231, 241, 231);
-  border: 1px solid green;
-}
-
-.inactive {
-  background-color: rgb(236, 223, 223);
-  border: 1px solid red;
-}
-
 table {
   width: 90%;
   margin: 5%;
@@ -41,4 +31,16 @@ table {
 .product .picture {
   width: 100px;
   height: 100px;
+}
+
+.carousel {
+  width: 620px;
+  margin: auto;
+}
+
+.carousel .carousel-caption {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: white !important;
+  text-shadow: 2px 0 black, -2px 0 black, 0 2px black, 0 -2px black,
+                 1px 1px black, -1px -1px black, 1px -1px black, -1px 1px black;
 }
